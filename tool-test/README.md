@@ -19,8 +19,8 @@ R1 VDD OUT 1k m=1
 .save all
 
 
-VSUPPLY VDD 0 DC 1.8V
-.PARAM TEMP=27
+Vsupply VDD GND dc 1.8V
+.param temp=27
 
 **** end user architecture code
 **.ends
@@ -37,12 +37,13 @@ Running the simulation results in the following error:
 
 ```
 ******
-** ngspice-31 : Circuit level simulation program
+** ngspice-32 : Circuit level simulation program
 ** The U. C. Berkeley CAD Group
 ** Copyright 1985-1994, Regents of the University of California.
+** Copyright 2001-2020, The ngspice team.
 ** Please get your ngspice manual from http://ngspice.sourceforge.net/docs.html
 ** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html
-** Creation Date: Sun Oct 27 09:07:06 UTC 2019
+** Creation Date: Tue Sep 22 16:56:28 UTC 2020
 ******
 
 Circuit: **.subckt tooltest
@@ -51,14 +52,11 @@ Scale set
 Error on line 0 :
   m.x1.msky130_fd_pr__nfet_01v8 out out 0 0 x1:sky130_fd_pr__nfet_01v8__model l=    9.99999999999999955e-07   w=    4.99999999999999956e-06   ad=    0.00000000000000000e+00   as=    0.00000000000000000e+00   pd=    0.00000000000000000e+00   ps=    0.00000000000000000e+00   nrd=    0.00000000000000000e+00   nrs=    0.00000000000000000e+00   sa=    0.00000000000000000e+00   sb=    0.00000000000000000e+00   sd=    0.00000000000000000e+00   nf=    1.00000000000000000e+00   m=    1.00000000000000000e+00 
 could not find a valid modelname
-Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+    Simulation interrupted due to error!
 
-Warning: include: has no value, DC 0 assumed
- Reference value :  0.00000e+00
-No. of Data Rows : 1
 ```
 
-Reason unknown at the moment.
+Reason unknown at the moment, tested with both ngspice-31 and ngspice-32.
 Transistor W=5u L=1u is one of the bins listed in sky130_fd_pr__nfet_01v8.bins.csv.
 
 I don't understand how this is supposed to work.  File `sky130_fd_pr__nfet_01v8.pm3.spice`

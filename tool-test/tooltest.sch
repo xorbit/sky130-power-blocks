@@ -27,5 +27,5 @@ C {vdd.sym} 420 -320 0 0 {name=l3 lab=VDD}
 C {lab_pin.sym} 420 -190 0 1 {name=l4 sig_type=std_logic lab=GND}
 C {code_shown.sym} 420 -510 0 0 {name=STIMULI
 only_toplevel=true
-value="VSUPPLY VDD 0 DC 1.8V
-.PARAM TEMP=27"}
+value="Vsupply VDD GND dc 1.8V
+.param temp=27"}
