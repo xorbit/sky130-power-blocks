@@ -30,3 +30,14 @@ Desirable blocks that I'd like to see implemented at some point:
 - Low side driver for SMPS.
 - Floating high side driver for SPMPS.
 - PWM engine(s) for various power conversion scenarios.
+
+## Things learned up till now
+
+The PDK is very much a work in development at this point, and information is scarce.
+Let's collect things we learned here.
+
+- The library uses `.option scale=1u`, so all dimensions
+specified are interpreted as if they are in um!  So for a transistor
+of width 7 um and length 1 um, you need to write `w=7 l=1`, NOT
+`w=7u l=1u`.
+
