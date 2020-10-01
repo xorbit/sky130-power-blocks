@@ -1,5 +1,9 @@
 # Notes on resistor models
 
+Check the
+[documentation](https://skywater-pdk.readthedocs.io/en/latest/rules/device-details.html#resistors)
+for official info on the resistors.
+
 Resistance as determined by the test benches included with the models
 for each model at l=10:
 
@@ -24,32 +28,52 @@ for each model at l=10:
 
 ## Model names
 
-I'm guessing that the `generic_nd` is an N diffusion resistor and the `generic_pd` a
-P diffusion resistor.  I do not know the physical structure or implementation of the
-other types or resistors.  More info is needed in the PDK.
+The `generic_nd` is an N+ diffusion resistor and the `generic_pd` a
+P+ diffusion resistor.  The `high_po` is a P+ poly resistor
+and the `xhigh_po` is a P- poly resistor.  The `iso_pw` uses the
+P-well resistance.
+I'm not seeing the same complement of devices in the
+[repo](https://foss-eda-tools.googlesource.com/skywater-pdk/libs/sky130_fd_pr)
+as are listed in the
+[docs](https://skywater-pdk.readthedocs.io/en/latest/rules/device-details.html#resistors),
+not sure why.  The docs talk about local interconnect and metal resistors
+in addition to the ones I see in the repo.
 
 ## Temperature effect
 
 A simulation to determine the effect of temperature on resistance is in
 [resistor-tc.spice](resistor-tc.spice).
 
+### Diffusion and P+ poly silicon resistors showing large positive temp coefficient
+
 ![Resistors 1, 2, 8](r1r2r8.png)
 
-Resistors `generic_nd` (N diffusion?) and `generic_pd` (P diffusion?), along with the
+Resistors `generic_nd` and `generic_pd`, along with the
 `high_po` without suffix, show a positive temperature coefficient.
 
 - For some reason, the value for `generic_nd` from the test bench listed above seems wrong,
 at least when scaled.  I scaled it 4.125 times shorter to get it in the same ballpark as
-the other resistors.
+the other resistors.  Not sure what happened there.  The sheet resistance in the docs
+seems to agree with me, the test bench result is too low.
 - The body of the `generic_pd` needs to be connected to a high voltage to prevent parasitic
 diodes from conducting.
+- The model for the diffusion resistors seems to show a +/- 12% change from -40°C to 120°C.
+
+### P+ poly resistors
 
 ![Resistors 3, 4, 5, 6, 7, 8](r3r4r5r6r7r8.png)
 
 Of the `high_po` models, only the one without suffix shows any temperature coefficient.
-The other variants seem to be specialized models for specific widths, but without proper
+The other variants are specialized models for specific widths, but without proper
 temperature behavior, they may be of limited use.  The fact that the generic model does
-show a temperature effect seems to suggest the other models are deficient in this respect.
+show a temperature effect seems to suggest the other models are deficient in this respect
+and should be expected to have temperature dependence as well.
+
+I'm not sure why these are called "precision resistors" by the documentation, since the
+generic model seems to show a +/- 5% change from -40°C to 120°C.  The P- poly seems
+significantly better.
+
+### P- poly resistors
 
 ![Resistors 15, 16](r15r16.png)
 
@@ -59,6 +83,18 @@ generic `xhigh_po`.  Same situation: the models for specific widths don't show a
 temperature coefficient, making them of limited use.  The generic model does show a
 temperature dependence.
 
+The low temperature dependence deserves a detail:
+
+![Resistor 16 detail](r16.png)
+
+The temperature dependent change is only 0.026% (260 ppm) from -40°C to 120°C, that's
+excellent.  In a smaller temp range from -40°C to 55°C, it's only 50 ppm!
+Of course, keep in mind the process variations, the docs don't seem to mention them
+for P- poly, but if it's similar to P+ poly, expect +/- 15% or so.  But if stability
+over temperature is what you need, these P- poly resistors seem to be the way to go.
+
+### P-well resistor
+
 ![Resistor 9](r9.png)
 
 The `iso_pw` model also does not show temperature dependence.
@@ -67,8 +103,8 @@ The `iso_pw` model also does not show temperature dependence.
 
 - Of the models that seem to implement a temperature dependence, the `xhigh_po` type
 seems to be the most stable over a temperature sweep.
-- The lack of temperature dependence in some of the models makes me question the
-accuracy of the models overall.
+- The lack of temperature dependence in some of the models may make it more difficult
+to use them since their constuction is intended for high precision.
 - Is the lack of temperature dependence of some models a compatibility issue?  I'm
 using `ngspice`, were the models made for a commercial variant of spice?  I do
 get a bunch of "unrecognized parameter" warnings, two of which are `unrecognized 
