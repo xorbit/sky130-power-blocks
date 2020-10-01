@@ -65,7 +65,13 @@ The `iso_pw` model also does not show temperature dependence.
 
 ## Thoughts
 
-Of the models that seem to implement a temperature dependence, the `xhigh_po` type
+- Of the models that seem to implement a temperature dependence, the `xhigh_po` type
 seems to be the most stable over a temperature sweep.
-The lack of temperature dependence in some of the models makes me question the
+- The lack of temperature dependence in some of the models makes me question the
 accuracy of the models overall.
+- Is the lack of temperature dependence of some models a compatibility issue?  I'm
+using `ngspice`, were the models made for a commercial variant of spice?  I do
+get a bunch of "unrecognized parameter" warnings, two of which are `unrecognized 
+parameter (tref) - ignored`, but they are for the `generic_nd` and `generic_pd`
+models, which do exhibit temperature dependence.
+
