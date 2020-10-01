@@ -1,4 +1,4 @@
-* Notes on resistor models
+# Notes on resistor models
 
 Resistance as determined by the test benches included with the models
 for each model at l=10:
@@ -22,11 +22,16 @@ for each model at l=10:
 16 sky130_fd_pr__res_xhigh_po        21146.97
 ```
 
-** Temperature effect
+## Model names
+
+I'm guessing that the `generic_nd` is an N diffusion resistor and the `generic_pd` a
+P diffusion resistor.  I do not know the physical structure or implementation of the
+other types or resistors.  More info is needed in the PDK.
+
+## Temperature effect
 
 A simulation to determine the effect of temperature on resistance is in (resistor-tc.spice).
 
-![Resistors 1, 2, 8](r1r2r8.eps)
 ![Resistors 1, 2, 8](r1r2r8.png)
 
 Resistors `generic_nd` (N diffusion?) and `generic_pd` (P diffusion?), along with the
@@ -38,3 +43,28 @@ the other resistors.
 - The body of the `generic_pd` needs to be connected to a high voltage to prevent parasitic
 diodes from conducting.
 
+![Resistors 3, 4, 5, 6, 7, 8](r3r4r5r6r7r8.png)
+
+Of the `high_po` models, only the one without suffix shows any temperature coefficient.
+The other variants seem to be specialized models for specific widths, but without proper
+temperature behavior, they may be of limited use.  The fact that the generic model does
+show a temperature effect seems to suggest the other models are deficient in this respect.
+
+![Resistors 15, 16](r15r16.png)
+
+If you check the models, you'll see that all `xhigh_po` models of specific width are based
+on the `xhigh_po__base` model, so I only put that one in the graph, together with the
+generic `xhigh_po`.  Same situation: the models for specific widths don't show any
+temperature coefficient, making them of limited use.  The generic model does show a
+temperature dependence.
+
+![Resistor 9](r9.png)
+
+The `iso_pw` model also does not show temperature dependence.
+
+## Thoughts
+
+Of the models that seem to implement a temperature dependence, the `xhigh_po` type
+seems to be the most stable over a temperature sweep.
+The lack of temperature dependence in some of the models makes me question the
+accuracy of the models overall.
