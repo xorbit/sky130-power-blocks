@@ -41,3 +41,5 @@ specified are interpreted as if they are in um!  So for a transistor
 of width 7 um and length 1 um, you need to write `w=7 l=1`, NOT
 `w=7u l=1u`.
 
+- Notes on [resistor models](primitive-test/resistors.md).
+

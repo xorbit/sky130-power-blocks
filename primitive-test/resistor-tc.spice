@@ -1,0 +1,50 @@
+** Resistor temperature sensitivity test
+.lib sky130_fd_pr/models/sky130.lib.spice tt
+.param temp=27
+
+Vsrc in 0 dc 1.8
+
+* Try to get around 50000 ohm for each resistor
+* Reference lengths were for l=10
+XR1 0 r1 0 sky130_fd_pr__res_generic_nd l=500000/4.125/291.20
+XR2 0 r2 in sky130_fd_pr__res_generic_pd l=500000/1962.15
+XR3 0 r3 0 sky130_fd_pr__res_high_po_0p35 l=500000/11617.76
+XR4 0 r4 0 sky130_fd_pr__res_high_po_0p69 l=500000/5310.80
+XR5 0 r5 0 sky130_fd_pr__res_high_po_1p41 l=500000/2556.68
+XR6 0 r6 0 sky130_fd_pr__res_high_po_2p85 l=500000/1266.97
+XR7 0 r7 0 sky130_fd_pr__res_high_po_5p73 l=500000/633.72
+XR8 0 r8 0 sky130_fd_pr__res_high_po l=500000/3550.44
+XR9 0 r9 0 sky130_fd_pr__res_iso_pw l=500000/15425.78
+XR10 0 r10 0 sky130_fd_pr__res_xhigh_po_0p35 l=500000/57696.95
+XR11 0 r11 0 sky130_fd_pr__res_xhigh_po_0p69 l=500000/29384.24
+XR12 0 r12 0 sky130_fd_pr__res_xhigh_po_1p41 l=500000/14418.62
+XR13 0 r13 0 sky130_fd_pr__res_xhigh_po_2p85 l=500000/7151.60
+XR14 0 r14 0 sky130_fd_pr__res_xhigh_po_5p73 l=500000/3570.24
+XR15 0 r15 0 sky130_fd_pr__res_xhigh_po__base l=500000/20305.67
+XR16 0 r16 0 sky130_fd_pr__res_xhigh_po l=500000/21146.97
+
+* 0V voltage sources to measure current
+VR1 in r1 dc 0
+VR2 in r2 dc 0
+VR3 in r3 dc 0
+VR4 in r4 dc 0
+VR5 in r5 dc 0
+VR6 in r6 dc 0
+VR7 in r7 dc 0
+VR8 in r8 dc 0
+VR9 in r9 dc 0
+VR10 in r10 dc 0
+VR11 in r11 dc 0
+VR12 in r12 dc 0
+VR13 in r13 dc 0
+VR14 in r14 dc 0
+VR15 in r15 dc 0
+VR16 in r16 dc 0
+
+.control
+dc temp -40 120 10
+plot i(vr1) i(vr2) i(vr3) i(vr4) i(vr5) i(vr6) i(vr7) i(vr8) i(vr9) i(vr10) i(vr11) i(vr12) i(vr13) i(vr14) i(vr15) i(vr16)
+.endc
+
+.end
+
