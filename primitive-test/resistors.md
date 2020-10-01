@@ -30,7 +30,8 @@ other types or resistors.  More info is needed in the PDK.
 
 ## Temperature effect
 
-A simulation to determine the effect of temperature on resistance is in (resistor-tc.spice).
+A simulation to determine the effect of temperature on resistance is in
+[resistor-tc.spice](resistor-tc.spice).
 
 ![Resistors 1, 2, 8](r1r2r8.png)
 
