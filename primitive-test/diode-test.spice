@@ -1,0 +1,62 @@
+** Diode test
+.lib sky130_fd_pr/models/sky130.lib.spice tt
+.include sky130_fd_pr/cells/diode_pd2nw_05v5/sky130_fd_pr__diode_pd2nw_05v5.model.spice
+.include sky130_fd_pr/cells/diode_pd2nw_05v5_hvt/sky130_fd_pr__diode_pd2nw_05v5_hvt.model.spice
+.include sky130_fd_pr/cells/diode_pd2nw_05v5_lvt/sky130_fd_pr__diode_pd2nw_05v5_lvt.model.spice
+.include sky130_fd_pr/cells/diode_pd2nw_11v0/sky130_fd_pr__diode_pd2nw_11v0.model.spice
+.include sky130_fd_pr/cells/diode_pd2nw_11v0/sky130_fd_pr__diode_pd2nw_11v0_no_rs.model.spice
+.include sky130_fd_pr/cells/diode_pw2nd_05v5/sky130_fd_pr__diode_pw2nd_05v5.model.spice
+.include sky130_fd_pr/cells/diode_pw2nd_05v5/sky130_fd_pr__diode_pw2nd_05v5__extended_drain.model.spice
+.include sky130_fd_pr/cells/diode_pw2nd_05v5_lvt/sky130_fd_pr__diode_pw2nd_05v5_lvt.model.spice
+.include sky130_fd_pr/cells/diode_pw2nd_05v5_nvt/sky130_fd_pr__diode_pw2nd_05v5_nvt.model.spice
+.include sky130_fd_pr/cells/diode_pw2nd_11v0/sky130_fd_pr__diode_pw2nd_11v0.model.spice
+.include sky130_fd_pr/cells/diode_pw2nd_11v0/sky130_fd_pr__diode_pw2nd_11v0_no_rs.model.spice
+.param temp=27
+
+vsup psup 0 dc 2
+
+d1 e1 0 sky130_fd_pr__diode_pd2nw_05v5
+*d2 e2 0 sky130_fd_pr__diode_pd2nw_05v5_hvt
+*d3 e3 0 sky130_fd_pr__diode_pd2nw_05v5_lvt
+*d4 e4 0 sky130_fd_pr__diode_pd2nw_11v0
+d5 e5 0 sky130_fd_pr__diode_pd2nw_11v0__no_rs
+d6 e6 0 sky130_fd_pr__diode_pw2nd_05v5
+*d7 e7 0 sky130_fd_pr__diode_pw2nd_05v5__extended_drain
+*d8 e8 0 sky130_fd_pr__diode_pw2nd_05v5_lvt
+*d9 e9 0 sky130_fd_pr__diode_pw2nd_05v5_nvt
+*d10 e10 0 sky130_fd_pr__diode_pw2nd_11v0
+*d11 e11 0 sky130_fd_pr__diode_pw2nd_11v0__no_rs
+
+vim1 rl1 e1 dc 0
+r1 psup rl1 10k
+*vim2 rl2 e2 dc 0
+*r2 psup rl2 10k
+*vim3 rl3 e3 dc 0
+*r3 psup rl3 10k
+*vim4 rl4 e4 dc 0
+*r4 psup rl4 10k
+vim5 rl5 e5 dc 0
+r5 psup rl5 10k
+vim6 rl6 e6 dc 0
+r6 psup rl6 10k
+*vim7 rl7 e7 dc 0
+*r7 psup rl7 10k
+*vim8 rl8 e8 dc 0
+*r8 psup rl8 10k
+*vim9 rl9 e9 dc 0
+*r9 psup rl9 10k
+*vim10 rl10 e10 dc 0
+*r10 psup rl10 10k
+*vim11 rl11 e11 dc 0
+*r11 psup rl11 10k
+
+.control
+dc vsup -2 2 0.1 temp -40 120 40
+*plot e1 e2 e3 e4 e5 e6 e7 e8 e9 e10 e11
+*plot i(vim1) i(vim2) i(vim3) i(vim4) i(vim5) i(vim6) i(vim7) i(vim8) i(vim9) i(vim10) i(vim11)
+plot e1 e5 e6
+plot i(vim1) i(vim5) i(vim6)
+.endc
+
+.end
+

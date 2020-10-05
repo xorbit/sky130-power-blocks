@@ -1,0 +1,26 @@
+** PMOS test
+.lib sky130_fd_pr/models/sky130.lib.spice tt
+.param temp=27
+
+vsup psup 0 dc 5
+vg g psup dc -1
+
+xm1 d1 g psup psup sky130_fd_pr__pfet_g5v0d10v5 l=1 w=10
+xm2 d2 g psup psup sky130_fd_pr__pfet_01v8 l=1 w=10
+xm3 d3 g psup psup sky130_fd_pr__pfet_01v8_lvt l=1 w=10
+
+vim1 rl1 d1 dc 0
+r1 rl1 0 10k
+vim2 rl2 d2 dc 0
+r2 rl2 0 10k
+vim3 rl3 d3 dc 0
+r3 rl3 0 10k
+
+.control
+dc vg 0 -5 -0.1 temp -40 120 40
+plot d1 d2 d3
+plot i(vim1) i(vim2) i(vim3)
+.endc
+
+.end
+

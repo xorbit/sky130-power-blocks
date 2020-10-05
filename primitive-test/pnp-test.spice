@@ -1,0 +1,26 @@
+** PNP test when used as diode
+.lib sky130_fd_pr/models/sky130.lib.spice tt
+.include sky130_fd_pr/cells/pnp_05v5/sky130_fd_pr__pnp_05v5_W3p40L3p40.model.spice
+.param temp=27
+
+vsup psup 0 dc 5
+
+xq1 0 0 e1 0 sky130_fd_pr__pnp_05v5_W0p68L0p68
+xq2 0 0 e2 0 sky130_fd_pr__pnp_05v5_W3p40L3p40
+xq3 0 0 e3 0 sky130_fd_pr__pnp_05v5_W0p68L0p68 m=8
+
+vim1 rl1 e1 dc 0
+r1 psup rl1 10k
+vim2 rl2 e2 dc 0
+r2 psup rl2 10k
+vim3 rl3 e3 dc 0
+r3 psup rl3 10k
+
+.control
+dc vsup 0 5 0.1 temp -40 120 40
+plot e1 e2 e3
+plot i(vim1) i(vim2) i(vim3)
+.endc
+
+.end
+
